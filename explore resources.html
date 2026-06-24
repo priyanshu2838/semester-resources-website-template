@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Resources - Semester Resource Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom scrollbar for sidebar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans h-screen flex overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-80 bg-white shadow-xl flex flex-col border-r border-slate-200 z-10 relative shrink-0">
+        <!-- Logo / Back button -->
+        <div class="p-6 border-b border-slate-100 flex items-center gap-3">
+            <a href="home_Start.html" class="p-2 -ml-2 rounded-lg hover:bg-slate-100 text-slate-500 transition-colors"
+                title="Back to Home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </a>
+            <h1 class="text-xl font-bold text-emerald-800">Resource Hub</h1>
+        </div>
+
+        <!-- Filters -->
+        <div class="p-6 flex-1 overflow-y-auto flex flex-col gap-6">
+
+            <!-- Branch Selection -->
+            <div>
+                <label for="branch" class="block text-sm font-semibold text-slate-700 mb-2">Branch</label>
+                <div id="branch-container" class="relative">
+                    <select id="branch"
+                        class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block p-3 pr-10 appearance-none transition-colors outline-none cursor-pointer">
+                        <option selected disabled>Choose your branch</option>
+                        <option value="CSAI">CSAI</option>
+                        <option value="CSDS">CSDS</option>
+                        <option value="CSE">CSE</option>
+                        <option value="IT">IT</option>
+                        <option value="ITNS">ITNS</option>
+                        <option value="ECE">ECE</option>
+                        <option value="EE">EE</option>
+                        <option value="ICE">ICE</option>
+                        <option value="MAC">MAC</option>
+                        <option value="ME">ME</option>
+                        <option value="BT">BT</option>
+                        <option value="EVDT">EVDT</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Semester Selection -->
+            <div>
+                <label for="semester" class="block text-sm font-semibold text-slate-700 mb-2">Semester</label>
+                <div class="relative">
+                    <select id="semester"
+                        class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block p-3 pr-10 appearance-none transition-colors outline-none cursor-pointer">
+                        <option selected disabled>Choose semester</option>
+                        <option value="1">Semester 1</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subject Selection -->
+            <div>
+                <label for="subject" class="block text-sm font-semibold text-slate-700 mb-2">Subject</label>
+                <div class="relative">
+                    <select id="subject" disabled
+                        class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block p-3 pr-10 appearance-none transition-colors outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                        <option selected disabled>First choose branch and semester</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <button id="find-resources-btn"
+                class="mt-4 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 rounded-lg transition-colors shadow-md shadow-emerald-500/20 active:scale-[0.98]">
+                Find Resources
+            </button>
+
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col bg-slate-50 relative overflow-y-auto w-full">
+        <!-- Subtle dot pattern background -->
+        <div class="fixed inset-0 z-0 pointer-events-none opacity-50"
+            style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+        <!-- Empty State Container -->
+        <div id="empty-state"
+            class="flex-1 flex flex-col items-center justify-center text-center z-10 p-10 animate-[fadeIn_0.5s_ease-in-out]">
+            <div
+                class="bg-white/80 backdrop-blur-md p-10 rounded-2xl shadow-sm border border-slate-200 max-w-md w-full mx-4">
+                <div
+                    class="w-20 h-20 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800 mb-3">Select your preferences</h2>
+                <p class="text-slate-500 text-[1.05rem] leading-relaxed">
+                    Please choose your <span class="font-semibold text-slate-700">Branch</span>, <span
+                        class="font-semibold text-slate-700">Semester</span>, and <span
+                        class="font-semibold text-slate-700">Subject</span> from the side panel to view available
+                    playlists,
+                    notes, and resources.
+                </p>
+            </div>
+        </div>
+
+        <!-- Results State Container (Hidden initially) -->
+        <div id="results-state"
+            class="flex-1 z-10 w-full max-w-5xl mx-auto p-10 hidden animate-[fadeIn_0.5s_ease-in-out]">
+            <div class="mb-8 border-b border-slate-200 pb-6">
+                <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight" id="results-title">Resources for
+                    [Subject]</h2>
+                <p class="text-slate-500 mt-2 text-lg">Here are the best resources curated for your studies.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Playlist Card -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow group flex flex-col">
+                    <div class="bg-indigo-50 p-6 border-b border-slate-100 flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800">Video Playlists</h3>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <p class="text-slate-600 mb-6 leading-relaxed">
+                            Complete video lectures covering the entire syllabus. Carefully curated from the best
+                            educators to help you grasp core concepts easily.
+                        </p>
+                        <button id="watch-playlists-btn"
+                            class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 group-hover:bg-indigo-600 mt-auto">
+                            Watch Playlists
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PYQ Card -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow group flex flex-col">
+                    <div class="bg-amber-50 p-6 border-b border-slate-100 flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800">Previous Year Questions</h3>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <p class="text-slate-600 mb-6 leading-relaxed">
+                            Official past year exam papers and question banks. Practice these to understand the exam
+                            pattern and test your preparation.
+                        </p>
+                        <button id="download-pyq-btn"
+                            class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 group-hover:bg-amber-600 mt-auto">
+                            Download PYQs
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Units State Container (Hidden initially) -->
+        <div id="units-state"
+            class="flex-1 z-10 w-full max-w-5xl mx-auto p-10 hidden animate-[fadeIn_0.5s_ease-in-out]">
+            <div class="mb-8 border-b border-slate-200 pb-6 flex items-center justify-between">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight" id="units-title">Units for
+                        [Subject]</h2>
+                    <p class="text-slate-500 mt-2 text-lg">Select a unit to view the video playlist.</p>
+                </div>
+                <button id="back-to-results-btn"
+                    class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-medium py-2 px-4 rounded-lg transition-colors flex items-center gap-2 shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Back
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                <!-- Unit 1 -->
+                <a href="#" id="unit-1-link" target="_blank"
+                    class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group flex flex-col items-center text-center">
+                    <div
+                        class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <span class="text-2xl font-bold">1</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">Unit 1</h3>
+                </a>
+                <!-- Unit 2 -->
+                <a href="#" id="unit-2-link" target="_blank"
+                    class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group flex flex-col items-center text-center">
+                    <div
+                        class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <span class="text-2xl font-bold">2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">Unit 2</h3>
+                </a>
+                <!-- Unit 3 -->
+                <a href="#" id="unit-3-link" target="_blank"
+                    class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group flex flex-col items-center text-center">
+                    <div
+                        class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <span class="text-2xl font-bold">3</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">Unit 3</h3>
+                </a>
+                <!-- Unit 4 -->
+                <a href="#" id="unit-4-link" target="_blank"
+                    class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group flex flex-col items-center text-center">
+                    <div
+                        class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <span class="text-2xl font-bold">4</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">Unit 4</h3>
+                </a>
+                <!-- Unit 5 -->
+                <a href="#" id="unit-5-link" target="_blank"
+                    class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group flex flex-col items-center text-center">
+                    <div
+                        class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <span class="text-2xl font-bold">5</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">Unit 5</h3>
+                </a>
+            </div>
+        </div>
+
+        <!-- PYQ State Container (Hidden initially) -->
+        <div id="pyq-state" class="flex-1 z-10 w-full max-w-5xl mx-auto p-10 hidden animate-[fadeIn_0.5s_ease-in-out]">
+            <div class="mb-8 border-b border-slate-200 pb-6 flex items-center justify-between">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight" id="pyq-title">Previous Year
+                        Questions for [Subject]</h2>
+                    <p class="text-slate-500 mt-2 text-lg">Select a term to view the PYQs.</p>
+                </div>
+                <button id="back-to-results-pyq-btn"
+                    class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-medium py-2 px-4 rounded-lg transition-colors flex items-center gap-2 shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Back
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 2026 Endsem -->
+                <a href="#" id="pyq-2026-endsem" target="_blank"
+                    class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-amber-400 transition-all cursor-pointer group flex flex-col items-center text-center">
+                    <div
+                        class="w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">2026 Endsem</h3>
+                </a>
+                <!-- 2026 Midsem -->
+                <a href="#" id="pyq-2026-midsem" target="_blank"
+                    class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-amber-400 transition-all cursor-pointer group flex flex-col items-center text-center">
+                    <div
+                        class="w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">2026 Midsem</h3>
+                </a>
+                <!-- 2025 Endsem -->
+                <a href="#" id="pyq-2025-endsem" target="_blank"
+                    class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-amber-400 transition-all cursor-pointer group flex flex-col items-center text-center">
+                    <div
+                        class="w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">2025 Endsem</h3>
+                </a>
+                <!-- 2025 Midsem -->
+                <a href="#" id="pyq-2025-midsem" target="_blank"
+                    class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-amber-400 transition-all cursor-pointer group flex flex-col items-center text-center">
+                    <div
+                        class="w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">2025 Midsem</h3>
+                </a>
+                <!-- 2024 Endsem -->
+                <a href="#" id="pyq-2024-endsem" target="_blank"
+                    class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-amber-400 transition-all cursor-pointer group flex flex-col items-center text-center">
+                    <div
+                        class="w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">2024 Endsem</h3>
+                </a>
+                <!-- 2024 Midsem -->
+                <a href="#" id="pyq-2024-midsem" target="_blank"
+                    class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-amber-400 transition-all cursor-pointer group flex flex-col items-center text-center">
+                    <div
+                        class="w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">2024 Midsem</h3>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+    <script>
+        const resourceData = {
+            "Maths-I": {
+                playlists: {
+                    unit1: "https://www.youtube.com/playlist?list=PLU6SqdYcYsfLLAU6Hxi0C_TnrZeqgbJMJ",
+                    unit2: "https://www.youtube.com/playlist?list=PLhSp9OSVmeyIVQpCt2kwsC1dNVl1GwlVn",
+                    unit3: "https://www.youtube.com/playlist?list=PLOnVZ1RkURcekS1OiAzCF0hCxhhsaF4H9",
+                    unit4: "https://www.youtube.com/playlist?list=PLhSp9OSVmeyLwtQbXv7VRXgoueSFaJGB4",
+                    unit5: "https://www.youtube.com/playlist?list=PLhSp9OSVmeyI3uivqqHzrlomwD6gZx2-R"
+                },
+                pyqs: {
+                    "2025_endsem": "https://drive.google.com/file/d/1WacIIodU9VQpqR0kpbNITvd4X-eC2oBy/view?usp=sharing",
+                    "2025_midsem": "https://drive.google.com/file/d/1G4dH6RgRjGEBTbTEiPih9sYQ43iqVGRl/view?usp=sharing",
+                    "2024_endsem": "https://drive.google.com/file/d/1_BhMRgVMCM1Xh2-yHGLEshOyy8D4TRpg/view?usp=sharing",
+                    "2024_midsem": "https://drive.google.com/file/d/1FvUQ51LkgrSpWfAtoydYqSNp3WDq8g1M/view?usp=sharing"
+                }
+            },
+            "Maths - 1": {
+                playlists: {
+                    unit1: "https://www.youtube.com/playlist?list=PLU6SqdYcYsfLLAU6Hxi0C_TnrZeqgbJMJ",
+                    unit2: "https://www.youtube.com/playlist?list=PLhSp9OSVmeyIVQpCt2kwsC1dNVl1GwlVn",
+                    unit3: "https://www.youtube.com/playlist?list=PLOnVZ1RkURcekS1OiAzCF0hCxhhsaF4H9",
+                    unit4: "https://www.youtube.com/playlist?list=PLhSp9OSVmeyLwtQbXv7VRXgoueSFaJGB4",
+                    unit5: "https://www.youtube.com/playlist?list=PLhSp9OSVmeyI3uivqqHzrlomwD6gZx2-R"
+                },
+                pyqs: {
+                    "2025_endsem": "https://drive.google.com/file/d/1WacIIodU9VQpqR0kpbNITvd4X-eC2oBy/view?usp=sharing",
+                    "2025_midsem": "https://drive.google.com/file/d/1G4dH6RgRjGEBTbTEiPih9sYQ43iqVGRl/view?usp=sharing",
+                    "2024_endsem": "https://drive.google.com/file/d/1_BhMRgVMCM1Xh2-yHGLEshOyy8D4TRpg/view?usp=sharing",
+                    "2024_midsem": "https://drive.google.com/file/d/1FvUQ51LkgrSpWfAtoydYqSNp3WDq8g1M/view?usp=sharing"
+                }
+            },
+            "English": {
+                pyqs: {
+                    "2026_endsem": "https://drive.google.com/file/d/1J2-rZk5jJn_a2g8MnRdCXWEoRdCxT8Vg/view?usp=sharing",
+                    "2026_midsem": "https://drive.google.com/file/d/1Cz_vNUOcWSmjOoSXuT3VEJ4jEQi-y5ty/view?usp=sharing",
+                    "2025_endsem": "https://drive.google.com/file/d/1R1XT4tIjIY1DSpa25VwOOySqgjclpYJG/view?usp=sharing",
+                    "2025_midsem": "https://drive.google.com/file/d/11s447kTDayyh9Ri-3hYb8sOBbMSOWyGl/view?usp=sharing"
+                }
+            }
+        };
+
+        const subjectsData = {
+            "CSAI": [
+                "Fundamentals of Electrical Engineering",
+                "Basic Analog & Digital Electronics",
+                "English",
+                "Maths-I",
+                "Chemistry"
+            ],
+            "CSDS": [
+                "Electronics & Communication Engineering",
+                "Quantum Physics",
+                "Fundamentals of Electrical Engineering",
+                "Maths-I",
+                "Computer Programming"
+            ],
+            "CSE": [
+                "Maths-I",
+                "Fundamentals of Electrical Engineering",
+                "Quantum Physics",
+                "Electronics & Communication Engineering",
+                "Computer Programming"
+            ],
+            "IT": [
+                "Maths-I",
+                "Fundamentals of Electrical Engineering",
+                "Quantum Physics",
+                "Electronics & Communication Engineering",
+                "Computer Programming"
+            ],
+            "ITNS": [
+                "Maths-I",
+                "Fundamentals of Electrical Engineering",
+                "Quantum Physics",
+                "Electronics & Communication Engineering",
+                "Computer Programming"
+            ],
+            "ECE": [
+                "Electronics & Communication Engineering",
+                "EG & CAD",
+                "Maths-I",
+                "English",
+                "Chemistry",
+                "Basic Analog & Digital Electronics"
+            ],
+            "EE": [
+                "Maths-I",
+                "English",
+                "Basic Mechanical Engineering",
+                "Basic Civil Engineering",
+                "Chemistry"
+            ],
+            "ICE": [
+                "Maths-I",
+                "English",
+                "Chemistry",
+                "Basic Mechanical Engineering",
+                "Basic Civil Engineering"
+            ],
+            "MAC": [
+                "Maths-I",
+                "English",
+                "Chemistry",
+                "Fundamentals of Electrical Engineering",
+                "Electronics & Communication Engineering"
+            ],
+            "ME": [
+                "Fundamentals of Electrical Engineering",
+                "Basic Analog & Digital Electronics",
+                "English",
+                "Maths - 1",
+                "Chemistry"
+            ],
+            "BT": [
+                "Electronics & Communication Engineering",
+                "EG & CAD",
+                "Maths-I",
+                "English",
+                "Chemistry",
+                "Basic Analog & Digital Electronics"
+            ],
+            "EVDT": [
+                "English",
+                "Chemistry",
+                "Maths-I",
+                "Engineering Graphics",
+                "Fundamentals of Electrical Engineering"
+            ]
+        };
+
+        function updateSubjects() {
+            const branch = document.getElementById('branch').value;
+            const semester = document.getElementById('semester').value;
+            const subjectSelect = document.getElementById('subject');
+
+            // Clear current options
+            subjectSelect.innerHTML = '<option selected disabled>Choose subject</option>';
+
+            // We only show subjects if both are chosen, AND it is semester 1
+            if (branch && branch !== "Choose your branch" && semester && semester !== "Choose semester") {
+                if (semester === "1" && subjectsData[branch]) {
+                    // Enable the subject dropdown
+                    subjectSelect.disabled = false;
+
+                    // Add new options
+                    subjectsData[branch].forEach(subject => {
+                        const option = document.createElement('option');
+                        option.value = subject;
+                        option.textContent = subject;
+                        subjectSelect.appendChild(option);
+                    });
+                } else {
+                    // Disable for other semesters as they have no data yet
+                    subjectSelect.disabled = true;
+                    subjectSelect.innerHTML = '<option selected disabled>No subjects available for this semester</option>';
+                }
+            } else {
+                // Disable if branch or semester missing
+                subjectSelect.disabled = true;
+                subjectSelect.innerHTML = '<option selected disabled>First choose branch and semester</option>';
+            }
+        }
+
+        document.getElementById('branch').addEventListener('change', updateSubjects);
+        document.getElementById('semester').addEventListener('change', updateSubjects);
+
+        // Handle "Find Resources" button click
+        document.getElementById('find-resources-btn').addEventListener('click', function () {
+            const branch = document.getElementById('branch').value;
+            const semester = document.getElementById('semester').value;
+            const subject = document.getElementById('subject').value;
+
+            // Only proceed if all three are selected properly
+            if (branch && branch !== "Choose your branch" &&
+                semester && semester !== "Choose semester" &&
+                subject && subject !== "Choose subject" &&
+                subject !== "First choose branch and semester" &&
+                subject !== "No subjects available for this semester") {
+
+                // Hide empty state
+                document.getElementById('empty-state').classList.add('hidden');
+
+                // Show results
+                const resultsState = document.getElementById('results-state');
+                resultsState.classList.remove('hidden');
+
+                // Set dynamic title
+                document.getElementById('results-title').textContent = 'Resources for ' + subject;
+            } else {
+                alert('Please select your Branch, Semester, and Subject to find resources.');
+            }
+        });
+
+        // Handle "Watch Playlists" button click
+        document.getElementById('watch-playlists-btn').addEventListener('click', function () {
+            const subject = document.getElementById('subject').value;
+
+            // Hide results state
+            document.getElementById('results-state').classList.add('hidden');
+
+            // Show units state
+            const unitsState = document.getElementById('units-state');
+            unitsState.classList.remove('hidden');
+
+            // Set dynamic title
+            document.getElementById('units-title').textContent = 'Units for ' + subject;
+
+            // Configure links
+            const unit1 = document.getElementById('unit-1-link');
+            const unit2 = document.getElementById('unit-2-link');
+            const unit3 = document.getElementById('unit-3-link');
+            const unit4 = document.getElementById('unit-4-link');
+            const unit5 = document.getElementById('unit-5-link');
+
+            const subjectData = resourceData[subject];
+            const playlists = subjectData?.playlists || {};
+
+            const bindLinkOrAlert = (element, link, typeName) => {
+                if (link) {
+                    element.href = link;
+                    element.onclick = null;
+                } else {
+                    element.href = "#";
+                    element.onclick = (e) => {
+                        e.preventDefault();
+                        alert(`${typeName} is coming soon!`);
+                    };
+                }
+            };
+
+            bindLinkOrAlert(unit1, playlists.unit1, "Playlist for this unit");
+            bindLinkOrAlert(unit2, playlists.unit2, "Playlist for this unit");
+            bindLinkOrAlert(unit3, playlists.unit3, "Playlist for this unit");
+            bindLinkOrAlert(unit4, playlists.unit4, "Playlist for this unit");
+            bindLinkOrAlert(unit5, playlists.unit5, "Playlist for this unit");
+        });
+
+        // Handle "Back" button click in units view
+        document.getElementById('back-to-results-btn').addEventListener('click', function () {
+            // Hide units state
+            document.getElementById('units-state').classList.add('hidden');
+
+            // Show results state
+            document.getElementById('results-state').classList.remove('hidden');
+        });
+
+        // Handle "Download PYQs" button click
+        document.getElementById('download-pyq-btn').addEventListener('click', function () {
+            const subject = document.getElementById('subject').value;
+
+            // Hide results state
+            document.getElementById('results-state').classList.add('hidden');
+
+            // Show pyq state
+            const pyqState = document.getElementById('pyq-state');
+            pyqState.classList.remove('hidden');
+
+            // Set dynamic title
+            document.getElementById('pyq-title').textContent = 'Previous Year Questions for ' + subject;
+
+            // Configure PYQ links
+            const pyq2026Endsem = document.getElementById('pyq-2026-endsem');
+            const pyq2026Midsem = document.getElementById('pyq-2026-midsem');
+            const pyq2025Endsem = document.getElementById('pyq-2025-endsem');
+            const pyq2025Midsem = document.getElementById('pyq-2025-midsem');
+            const pyq2024Endsem = document.getElementById('pyq-2024-endsem');
+            const pyq2024Midsem = document.getElementById('pyq-2024-midsem');
+
+            const subjectData = resourceData[subject];
+            const pyqs = subjectData?.pyqs || {};
+
+            const bindLinkOrAlert = (element, link, typeName) => {
+                if (link) {
+                    element.href = link;
+                    element.onclick = null;
+                } else {
+                    element.href = "#";
+                    element.onclick = (e) => {
+                        e.preventDefault();
+                        alert(`${typeName} is coming soon!`);
+                    };
+                }
+            };
+
+            bindLinkOrAlert(pyq2026Endsem, pyqs["2026_endsem"], "PYQ for this term");
+            bindLinkOrAlert(pyq2026Midsem, pyqs["2026_midsem"], "PYQ for this term");
+            bindLinkOrAlert(pyq2025Endsem, pyqs["2025_endsem"], "PYQ for this term");
+            bindLinkOrAlert(pyq2025Midsem, pyqs["2025_midsem"], "PYQ for this term");
+            bindLinkOrAlert(pyq2024Endsem, pyqs["2024_endsem"], "PYQ for this term");
+            bindLinkOrAlert(pyq2024Midsem, pyqs["2024_midsem"], "PYQ for this term");
+        });
+
+        // Handle "Back" button click in pyq view
+        document.getElementById('back-to-results-pyq-btn').addEventListener('click', function () {
+            // Hide pyq state
+            document.getElementById('pyq-state').classList.add('hidden');
+
+            // Show results state
+            document.getElementById('results-state').classList.remove('hidden');
+        });
+    </script>
+</body>
+
+</html>
